@@ -2,6 +2,8 @@
 
 ## Abstract
 
+When users use our [components](https://reactjs.org/docs/components-and-props.html#function-and-class-components), they may need to [import](https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/import) more than just the component itself. For example, they may want to use the [interface](https://www.typescriptlang.org/docs/handbook/interfaces.html) of a prop (e.g., button's color) or its built-in options (e.g., the "primary" color for a button). The export(s) of a component, therefore, should be designed to cover all of these use cases in an effective and intuitive way.
+
 This page describes our expectations and approaches in exporting a React component and its related entities.
 
 `Button.tsx`
@@ -31,10 +33,6 @@ import Button, { ButtonColor } from "...";
 const customColor = { text: "", bg: "" };
 <Button color={customColor} />
 ```
-
-## Background
-
-When users use our [components](https://reactjs.org/docs/components-and-props.html#function-and-class-components), they may need to [import](https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/import) more than just the component itself. For example, they may want to use the [interface](https://www.typescriptlang.org/docs/handbook/interfaces.html) of a prop (e.g., button's color) or its built-in options (e.g., the "primary" color for a button). The export(s) of a component, therefore, should be designed to cover all of these use cases in an effective and intuitive way.
 
 ## Expectations
 

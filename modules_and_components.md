@@ -1,22 +1,58 @@
 # Modules and components
 
-When designing and using [React components](https://reactjs.org/docs/components-and-props.html#function-and-class-components), we usually need to [export](https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export) and [import](https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/import) more than just the component itself. For example, we may want to import the [interface](https://www.typescriptlang.org/docs/handbook/interfaces.html) of a prop (e.g., button's color) or its implementations/options (e.g., the "primary" color for a button).
+## Background
 
-This page describes our expectations, several approaches, and what we believe is the optimal solution to export and import React components as JS modules (for now).
+When users use our [components](https://reactjs.org/docs/components-and-props.html#function-and-class-components), they may need to [import](https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/import) more than just the component itself. For example, they may want to use the [interface](https://www.typescriptlang.org/docs/handbook/interfaces.html) of a prop (e.g., button's color) or its built-in options (e.g., the "primary" color for a button). Good components, therefore, should [export](https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export) its API with this in mind.
+
+This page describes our expectations, several approaches, and what we believe is the optimal solution (for now) to export the API of React components, as JS modules.
 
 ## Expectations
 
-We prefer approaches that:
+We prefer approaches that are:
 
-- **Enhance discoverability:** easy to learn about props and their options right from the editor.
-- **Follow standards:** no adhoc hack, not too far from the outside world, and should allow tree-shaking methods to work.
-- **Help with naming:** reduce manual works to address naming conflicts when importing props with same name from different components (e.g., button's color and tag's color).
+- **Friendly:** Should not assume or enforce "import" styles but do expect and follow [common, established practices](https://create-react-app.dev/docs/importing-a-component) of the community.
+- **Informative:** Should take advantage of TypeScript to let engineers easily discover not only the available props but also the options of these props.
 
 ## Approaches
 
-Although there are only 2 types of export in JavaScript (default and named), there are [many ways](https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export#Syntax) (in term of syntax) to export and import from a module. Here we only discuss the most prominent ones:
+Usually, there are 3 types of things that users would want to import/consume from a component, sorted by usage:
+1. The component itself (usually a function but could also be a class)
+2. The values to use with the component's props (e.g., to have a button with "primary" color)
+3. The types of the component's props (e.g., the interface of the "color" prop)
 
-### A. All are named without prefix
+We will go through each type to see what's the suitable way to export them, then we should be able to see how should we export all of them together.
+
+### The component
+
+Like everything else, the component can be exported as default, or named. In case of named export, it can use a global name, or a local one:
+
+```tsx
+/* A */ export default (props) => ...
+/* B */ export const Button = (props) => ... // global name
+/* C */ export const Component = (props) => ... // local name
+```
+
+Taking the "Friendly" expectation into consideration, we can see the local name approach (C) is not a good one. In this case, the users must import with either [namespace](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#Import_an_entire_module's_contents) or [alias](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#Import_an_export_with_a_more_convenient_alias). The former introduces a weird usage, while the latter brings unnecessary, extra works for the users:
+
+```tsx
+// Approach C with namespace import
+import * as Button from "...";
+<Button.Component /> // weird usage
+// Approach C with alias import
+import { Component as Button } from "..."; // extra work
+<Button />
+```
+
+Both the A and B approaches should easily pass our "Friendly" expectation, as they are both widely used in UI libraries. However, to choose one, we prefer A over B because:
+
+1. The component is semantically the heart of the file/module, and users expect it in most, if not all, cases.
+2. It's the [official recommendation](https://create-react-app.dev/docs/importing-a-component).
+
+### The values
+
+### The types
+
+### A. All named
 
 ```tsx
 // Button.ts
@@ -26,10 +62,16 @@ export const Component = (props: { color: Color }) => (/* ... */);
 ```
 
 ```tsx
-// Foo.tsx
-import * as Button from "@dvkndn/core/button";
-import * as Tag from "@dvkndn/core/tag";
-<Button.Component color={Button.Colors.Primary} />
+// Foo.tsx (common use cases)
+import { Button } from "@axie/ds/button";
+<Button color={Button.Colors.Primary} />
+```
+
+```tsx
+// Foo.tsx (rare use cases)
+import { Button, ButtonColor } from "@axie/ds/button";
+const customColor: ButtonColor = { ... };
+<Button color={customColor} />
 ```
 
 ### B. All are named with prefix
@@ -71,6 +113,43 @@ import Tag, { Colors as TagColors } from "@dvkndn/core/tag";
 import Button, * as button from "@dvkndn/core/button";
 import Tag, * as tag from "@dvkndn/core/button";
 <Button color={button.Colors.Primary} />
+```
+
+### D.
+
+```tsx
+// Button.ts
+export interface Color { light: string; dark: string; }
+interface Props { color: Color; }
+const Button = (props: Props) => (/* ... */);
+Button.colors = { primary: { light: "", dark: "" } };
+export default Button;
+```
+
+```tsx
+// Foo.tsx
+import Button, { Color as ButtonColor } from "@dvkndn/core/button";
+const customColor: ButtonColor = { light: "", dark: "" };
+<Button color={Button.colors.primary} />
+<Button color={customColor} />
+```
+
+### E.
+
+```tsx
+// Button.ts
+export interface ButtonColor { light: string; dark: string; }
+interface Props { color: Color; }
+export const Button = (props: Props) => (/* ... */);
+Button.colors = { primary: { light: "", dark: "" } };
+```
+
+```tsx
+// Foo.tsx
+import { Button, ButtonColor } from "@dvkndn/core/button";
+const customColor: ButtonColor = { light: "", dark: "" };
+<Button color={Button.colors.primary} />
+<Button color={customColor} />
 ```
 
 ## Current solution

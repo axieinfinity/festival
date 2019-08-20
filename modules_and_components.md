@@ -27,9 +27,9 @@ We will go through each type to see what's the suitable way to export them, then
 Like everything else, the component can be exported as default, or named. In case of named export, it can use a global name, or a local one:
 
 ```tsx
-/* A */ export default (props) => ...
-/* B */ export const Button = (props) => ... // global name
-/* C */ export const Component = (props) => ... // local name
+/* A */ export default Button;
+/* B */ export const Button = (props) => ...; // global name
+/* C */ export const Component = (props) => ...; // local name
 ```
 
 Taking the "Friendly" expectation into consideration, we can see the local name approach (C) is not a good one. In this case, the users must import with either [namespace](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#Import_an_entire_module's_contents) or [alias](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#Import_an_export_with_a_more_convenient_alias). The former introduces a weird usage, while the latter brings unnecessary, extra works for the users:
@@ -50,123 +50,79 @@ Both the A and B approaches should easily pass our "Friendly" expectation, as th
 
 ### The values
 
+It's common for users to import and use values (usually options of props) to make the most out of a component. Since we decided to export our component as the default one, we have 3 ways to export our values along with it:
+
+```tsx
+/* A */ export const colors = { ... }; // local name
+/* B */ export const ButtonColors = { ... }; // global name
+/* C */ Button.colors = { ... }; // attach to the component
+```
+
+In most cases, if not all, our users should already imported the Button component. Because of this, approach C has a clear advantage because users' editors can easily list these built-in values following the familiar dot notation:
+
+<img width="647" alt="Screen Shot 2019-08-21 at 1 06 08 AM" src="https://user-images.githubusercontent.com/5953369/63372263-ef1f2680-c3af-11e9-9683-865e21199b93.png">
+
+<img width="647" alt="Screen Shot 2019-08-21 at 1 06 22 AM" src="https://user-images.githubusercontent.com/5953369/63372262-ee869000-c3af-11e9-8f9d-6666ddfe8529.png">
+
+This greatly enhances the discoverability of the component as users only need to type the first few characters of a prop after any occurence of the imported component. In constrast, both approach A and B require the users to go back to the import statements (note that TypeScript's auto import [can't help here](https://user-images.githubusercontent.com/4246176/63336293-21f1fc00-c369-11e9-8c09-dd6c52941a6b.png)).
+
 ### The types
 
-### A. All named
+Unlike the component and the values, types (including interfaces) are not expected to be imported frequently:
+- Props with interfaces are advanced use cases in the first place.
+- Even in those cases, the built-in values should be enough most of the time.
+- Even if we need custom values, it can also be done inline, without the need to import any interfaces:
 
 ```tsx
-// Button.ts
-export interface Color { light: string; dark: string; }
-export const Colors: { [key: string]: Color } = { /* ... */}
-export const Component = (props: { color: Color }) => (/* ... */);
+<Button colors={{ text: "...", bg: "..." }} />
 ```
 
+Therefore, trying to fight with TypeScript to attach them to the component (like values) doesn't worth the effort. Instead, normal named export are perectly fine for this case. The question left is whether we should use local or global names:
+
 ```tsx
-// Foo.tsx (common use cases)
-import { Button } from "@axie/ds/button";
-<Button color={Button.Colors.Primary} />
+/* A: local name */
+export interface Color = { ... };
+import Button, { Color as ButtonColor } from "...";
+
+/* B: global name */
+export interface ButtonColor = { ... };
+import Button, { ButtonColor } from "...";
 ```
 
+Although not technically required, we prefer approach B here:
+- For types of props, naming conflicts are common (e.g., many components could have the "color" prop), so it's better to help our users in the first place.
+- Instead of `export default () => ...`, we prefered `export default Button`, so it's more unified to have other export entries to start with Button. In other words, we already named our export entries with global name.
+- It helps a little for code navigation.
+
+## Conclusion
+
+`Button.tsx`
 ```tsx
-// Foo.tsx (rare use cases)
-import { Button, ButtonColor } from "@axie/ds/button";
-const customColor: ButtonColor = { ... };
-<Button color={customColor} />
-```
+export interfaces ButtonColor {
+  text: string;
+  bg: string;
+};
 
-### B. All are named with prefix
+interface Props { color: ButtonColor; }
+const Button = (props) => (...);
 
-```tsx
-// Button.ts
-export interface ButtonColor { light: string; dark: string; }
-export const ButtonColors: { [key: string]: Color } = { /* ... */ };
-export const Button = (props: { color: Color }) => (/* ... */);
-```
+Button.colors = {
+  primary: { text: "", bg: "" },
+  neutral: { text: "", bg: "" },
+};
 
-```tsx
-// Foo.tsx
-import { Button, ButtonColors } from "@dvkndn/core/button";
-import { Tag, TagColors } from "@dvkndn/core/tag";
-<Button color={ButtonColors.Primary} />
-```
-
-### C. Component is default, others are named without prefix
-
-```tsx
-// Button.ts
-export interface Color { light: string; dark: string; }
-export const Colors: { [key: string]: Color } = { /* ... */ };
-export default (props: { color: Color }) => (/* ... */);
-```
-
-```tsx
-// C1. Alias import
-// Foo.tsx
-import Button, { Colors as ButtonColors } from "@dvkndn/core/button";
-import Tag, { Colors as TagColors } from "@dvkndn/core/tag";
-<Button color={ButtonColors.Primary} />
-```
-
-```tsx
-// C2. Namespace import
-// Foo.tsx
-import Button, * as button from "@dvkndn/core/button";
-import Tag, * as tag from "@dvkndn/core/button";
-<Button color={button.Colors.Primary} />
-```
-
-### D.
-
-```tsx
-// Button.ts
-export interface Color { light: string; dark: string; }
-interface Props { color: Color; }
-const Button = (props: Props) => (/* ... */);
-Button.colors = { primary: { light: "", dark: "" } };
 export default Button;
 ```
 
+`Foo.tsx`
 ```tsx
-// Foo.tsx
-import Button, { Color as ButtonColor } from "@dvkndn/core/button";
-const customColor: ButtonColor = { light: "", dark: "" };
+import Button, { ButtonColor } from "...";
+
 <Button color={Button.colors.primary} />
+
+const customColor = { text: "", bg: "" };
 <Button color={customColor} />
 ```
-
-### E.
-
-```tsx
-// Button.ts
-export interface ButtonColor { light: string; dark: string; }
-interface Props { color: Color; }
-export const Button = (props: Props) => (/* ... */);
-Button.colors = { primary: { light: "", dark: "" } };
-```
-
-```tsx
-// Foo.tsx
-import { Button, ButtonColor } from "@dvkndn/core/button";
-const customColor: ButtonColor = { light: "", dark: "" };
-<Button color={Button.colors.primary} />
-<Button color={customColor} />
-```
-
-## Current solution
-
-- Speaking of discoverability, A is better than B and C:
-    - In A, users can see all exports at every occurrence of `Button`
-    - In B and C1, the exports can only be suggested at the import statement. The "auto import" of some editors may not be able to help here (to discover ButtonColors).
-    - in C2, exports may be found at occurrences of `button` but this is obviously not as good as A
-- Speaking of learning curve, C is the most common approach.
-    - A and B are less common because in most systems the API of components are quite simple and only export the component itself.
-    - However, these are all standard methods and any engineer should be able to understand how they work in no time.
-- Speaking of naming in importing, both A and B are better than C:
-    - A is good because of the enforcement of namespace imports, having a nice, concise import statements.
-    - B is good because all definitions are globally unique in the first place, thus make the import easier, but could easily lead to long, repetitive import statements (e.g., `import { FooA, FooB, ..., FooX }`).
-    - C is not really good as users must always do extra work to avoid naming conflicts, either via alias or via namespace (more work comparing to A).
-
-**Therefore, for now, we prefer the approach A.**
 
 ## References
 

@@ -22,7 +22,7 @@ We prefer approaches that are:
 ## Approaches
 
 Usually, there are 3 types of things that users would want to import/consume from a component, sorted by usage:
-1. The component itself (usually a function but could also be a class)
+1. The component itself (usually a function or a class)
 2. The values to use with the component's props (e.g., to have a button with "primary" color)
 3. The types of the component's props (e.g., the interface of the "color" prop)
 

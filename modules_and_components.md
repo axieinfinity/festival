@@ -98,7 +98,7 @@ Although not technically required, we prefer approach B here:
 
 `Button.tsx`
 ```tsx
-export interfaces ButtonColor {
+export interface ButtonColor {
   text: string;
   bg: string;
 };

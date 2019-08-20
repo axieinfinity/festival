@@ -30,9 +30,11 @@ export default Button;
 ```tsx
 import Button, { ButtonColor } from "...";
 
+// Common usages, you don't need ButtonColor here
 <Button color={Button.colors.primary} />
 
-const customColor = { text: "", bg: "" };
+// Advanced usages
+const customColor: ButtonColor = { text: "", bg: "" };
 <Button color={customColor} />
 ```
 

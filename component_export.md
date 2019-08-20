@@ -1,8 +1,6 @@
 # Exports in components
 
-This page describes our expectations, several approaches, and what we believe is the optimal solution (for now) to export the API of React components, as JS modules.
-
-For a TL;DR, please go to [Conclusion](https://github.com/axieinfinity/festival/blob/master/modules_and_components.md#conclusion) section.
+This page describes our expectations and approaches to export the API of React components, as JS modules. For a TL;DR, please go to [Conclusion](https://github.com/axieinfinity/festival/blob/master/modules_and_components.md#conclusion) section.
 
 ## Background
 

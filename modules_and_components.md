@@ -1,8 +1,10 @@
+# Modules and components
+
 When designing and using [React components](https://reactjs.org/docs/components-and-props.html#function-and-class-components), we usually need to [export](https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export) and [import](https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/import) more than just the component itself. For example, we may want to import the [interface](https://www.typescriptlang.org/docs/handbook/interfaces.html) of a prop (e.g., button's color) or its implementations/options (e.g., the "primary" color for a button).
 
 This page describes our expectations, several approaches, and what we believe is the optimal solution to export and import React components as JS modules (for now).
 
-# Expectations
+## Expectations
 
 We prefer approaches that:
 
@@ -10,11 +12,11 @@ We prefer approaches that:
 - **Follow standards:** no adhoc hack, not too far from the outside world, and should allow tree-shaking methods to work.
 - **Help with naming:** reduce manual works to address naming conflicts when importing props with same name from different components (e.g., button's color and tag's color).
 
-# Approaches
+## Approaches
 
 Although there are only 2 types of export in JavaScript (default and named), there are [many ways](https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export#Syntax) (in term of syntax) to export and import from a module. Here we only discuss the most prominent ones:
 
-## A. All are named without prefix
+### A. All are named without prefix
 
 ```tsx
 // Button.ts
@@ -30,7 +32,7 @@ import * as Tag from "@dvkndn/core/tag";
 <Button.Component color={Button.Colors.Primary} />
 ```
 
-## B. All are named with prefix
+### B. All are named with prefix
 
 ```tsx
 // Button.ts
@@ -46,7 +48,7 @@ import { Tag, TagColors } from "@dvkndn/core/tag";
 <Button color={ButtonColors.Primary} />
 ```
 
-## C. Component is default, others are named without prefix
+### C. Component is default, others are named without prefix
 
 ```tsx
 // Button.ts
@@ -71,7 +73,7 @@ import Tag, * as tag from "@dvkndn/core/button";
 <Button color={button.Colors.Primary} />
 ```
 
-# Current solution
+## Current solution
 
 - Speaking of discoverability, A is better than B and C:
     - In A, users can see all exports at every occurrence of `Button`
@@ -87,7 +89,7 @@ import Tag, * as tag from "@dvkndn/core/button";
 
 **Therefore, for now, we prefer the approach A.**
 
-# References
+## References
 
 - [https://create-react-app.dev/docs/importing-a-component](https://create-react-app.dev/docs/importing-a-component)
 - [https://exploringjs.com/impatient-js/ch_modules.html](https://exploringjs.com/impatient-js/ch_modules.html)

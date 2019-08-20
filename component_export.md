@@ -2,7 +2,7 @@
 
 ## Abstract
 
-This page describes our expectations and approaches in exporting React components and related entities within JS environment.
+This page describes our expectations and approaches in exporting a React component and its related entities.
 
 `Button.tsx`
 ```tsx

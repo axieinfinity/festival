@@ -1,4 +1,4 @@
-# Modules and components
+# JS modules in components
 
 > TL;DR: go to [Conclusion](https://github.com/axieinfinity/festival/blob/master/modules_and_components.md#conclusion)
 

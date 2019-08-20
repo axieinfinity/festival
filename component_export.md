@@ -2,41 +2,13 @@
 
 ## Abstract
 
-When users use our [components](https://reactjs.org/docs/components-and-props.html#function-and-class-components), they may need to [import](https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/import) more than just the component itself. For example, they may want to use the [interface](https://www.typescriptlang.org/docs/handbook/interfaces.html) of a prop (e.g., button's color) or its built-in options (e.g., the "primary" color for a button). The exports of a component, therefore, should be designed to cover all of these use cases in an effective and intuitive way.
+When our users use the [components](https://reactjs.org/docs/components-and-props.html#function-and-class-components) that we designed, they may need to [import](https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/import) more than just the component itself. For example, they may want to ultilize the [interface](https://www.typescriptlang.org/docs/handbook/interfaces.html) of a prop (e.g., button's color) or to use its built-in options (e.g., the "primary" color for a button).
 
-This page describes our expectations and approaches in exporting a React component and its related entities.
+What to export from a component, and how to export them, are therefore critical to the design of UI components. This page describes our expectations and approaches in exporting a React component and its related entities. In the end, what we found are:
 
-## TL;DR
-
-`Button.tsx`
-```tsx
-export interface ButtonColor {
-  text: string;
-  bg: string;
-};
-
-interface Props { color: ButtonColor; }
-const Button = (props: Props) => (...);
-
-Button.colors = {
-  primary: { text: "", bg: "" },
-  neutral: { text: "", bg: "" },
-};
-
-export default Button;
-```
-
-`Foo.tsx`
-```tsx
-import Button, { ButtonColor } from "...";
-
-// Common usages, you don't need ButtonColor here
-<Button color={Button.colors.primary} />
-
-// Advanced usages
-const customColor: ButtonColor = { text: "", bg: "" };
-<Button color={customColor} />
-```
+1. The component itself should use default export.
+2. The component's values (usually options of its props) should be attached to the component (default export).
+3. The component's types and interfaces should use named export.
 
 ## Expectations
 
@@ -126,6 +98,42 @@ Although not technically required, we prefer approach B here:
 - For types of props, naming conflicts are common (e.g., many components could have the "color" prop), so it's better to help our users in the first place.
 - Instead of `export default () => ...`, we prefered `export default Button`, so it's more unified to have other export entries to start with Button. In other words, we already named our export entries with global name.
 - It helps a little for code navigation.
+
+## Conclusion
+
+1. The component itself should use default export.
+2. The component's values (usually options of its props) should be attached to the component (default export).
+3. The component's types and interfaces should use named export.
+
+`Button.tsx`
+```tsx
+export interface ButtonColor {
+  text: string;
+  bg: string;
+};
+
+interface Props { color: ButtonColor; }
+const Button = (props: Props) => (...);
+
+Button.colors = {
+  primary: { text: "", bg: "" },
+  neutral: { text: "", bg: "" },
+};
+
+export default Button;
+```
+
+`Foo.tsx`
+```tsx
+import Button, { ButtonColor } from "...";
+
+// Common usages, you don't need ButtonColor here
+<Button color={Button.colors.primary} />
+
+// Advanced usages
+const customColor: ButtonColor = { text: "", bg: "" };
+<Button color={customColor} />
+```
 
 ## References
 

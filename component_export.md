@@ -4,7 +4,7 @@
 
 When our users use the [components](https://reactjs.org/docs/components-and-props.html#function-and-class-components) that we designed, they may need to [import](https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/import) more than just the component itself. For example, they may want to ultilize the [interface](https://www.typescriptlang.org/docs/handbook/interfaces.html) of a prop (e.g., button's color) or to use its built-in options (e.g., the "primary" color for a button).
 
-What to export from a component, and how to export them, are therefore critical to the design of UI components. This page describes our expectations and approaches in exporting a React component and its related entities. In the end, what we found are:
+What to export from a component, and how to export them, are therefore critical to the design of UI components. This page describes our expectations and approaches in exporting a React component and its related entities. So far, what we learned are:
 
 1. The component itself should use default export.
 2. The component's values (usually options of its props) should be attached to the component (default export).

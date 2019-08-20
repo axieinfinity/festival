@@ -10,6 +10,8 @@ What to export from a component, and how to export them, are therefore critical 
 2. The component's values (usually options of its props) should be attached to the component (default export).
 3. The component's types and interfaces should use named export.
 
+For a code representation of these principles, see the [Conclusion](https://github.com/axieinfinity/festival/blob/master/component_export.md#conclusion) section.
+
 ## Expectations
 
 We prefer approaches that are:

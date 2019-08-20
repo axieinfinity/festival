@@ -1,12 +1,12 @@
-# JS modules in components
+# Exports in components
 
-> TL;DR: go to [Conclusion](https://github.com/axieinfinity/festival/blob/master/modules_and_components.md#conclusion)
+This page describes our expectations, several approaches, and what we believe is the optimal solution (for now) to export the API of React components, as JS modules.
+
+For a TL;DR, please go to [Conclusion](https://github.com/axieinfinity/festival/blob/master/modules_and_components.md#conclusion) section.
 
 ## Background
 
 When users use our [components](https://reactjs.org/docs/components-and-props.html#function-and-class-components), they may need to [import](https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/import) more than just the component itself. For example, they may want to use the [interface](https://www.typescriptlang.org/docs/handbook/interfaces.html) of a prop (e.g., button's color) or its built-in options (e.g., the "primary" color for a button). The export(s) of a component, therefore, should be designed to cover all of these use cases in an effective and intuitive way.
-
-This page describes our expectations, several approaches, and what we believe is the optimal solution (for now) to export the API of React components, as JS modules.
 
 ## Expectations
 

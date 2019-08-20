@@ -4,11 +4,11 @@ This page describes our expectations, several approaches, and what we believe is
 
 # Expectations
 
-We should choose an approach that:
+We prefer approaches that:
 
-- Increase the discoverability of a component (e.g., what props are there and what are their options).
-- Increase the ease for a new engineer to understand the approach (i.e., it's not too far/strange from the outside world).
-- Decrease naming conflicts when importing props with same name from several components (e.g., button's color and tag's color).
+- **Enhance discoverability:** easy to learn about props and their options right from the editor.
+- **Follow standards:** no adhoc hack, not too far from the outside world, and should allow tree-shaking methods to work.
+- **Help with naming:** reduce manual works to address naming conflicts when importing props with same name from different components (e.g., button's color and tag's color).
 
 # Approaches
 
@@ -91,3 +91,7 @@ import Tag, * as tag from "@dvkndn/core/button";
 
 - [https://create-react-app.dev/docs/importing-a-component](https://create-react-app.dev/docs/importing-a-component)
 - [https://exploringjs.com/impatient-js/ch_modules.html](https://exploringjs.com/impatient-js/ch_modules.html)
+- [https://humanwhocodes.com/blog/2019/01/stop-using-default-exports-javascript-module/](https://humanwhocodes.com/blog/2019/01/stop-using-default-exports-javascript-module/)
+- [https://stackoverflow.com/questions/42051588/wildcard-or-asterisk-vs-named-or-selective-import-es6-javascript](https://stackoverflow.com/questions/42051588/wildcard-or-asterisk-vs-named-or-selective-import-es6-javascript)
+- [https://gist.github.com/Rich-Harris/24a8ddd3947150aa8c15a9367faf1d62](https://gist.github.com/Rich-Harris/24a8ddd3947150aa8c15a9367faf1d62)
+- [https://medium.com/@skovy/using-component-dot-notation-with-typescript-to-create-a-set-of-components-b0b2aad4892b](https://medium.com/@skovy/using-component-dot-notation-with-typescript-to-create-a-set-of-components-b0b2aad4892b)

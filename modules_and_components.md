@@ -104,7 +104,7 @@ export interfaces ButtonColor {
 };
 
 interface Props { color: ButtonColor; }
-const Button = (props) => (...);
+const Button = (props: Props) => (...);
 
 Button.colors = {
   primary: { text: "", bg: "" },

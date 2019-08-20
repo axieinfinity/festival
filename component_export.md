@@ -1,6 +1,36 @@
 # Exports in components
 
-This page describes our expectations and approaches to export the API of React components, as JS modules. For a TL;DR, please go to [Conclusion](https://github.com/axieinfinity/festival/blob/master/modules_and_components.md#conclusion) section.
+## Abstract
+
+This page describes our expectations and approaches in exporting React components and related entities within JS environment.
+
+`Button.tsx`
+```tsx
+export interface ButtonColor {
+  text: string;
+  bg: string;
+};
+
+interface Props { color: ButtonColor; }
+const Button = (props: Props) => (...);
+
+Button.colors = {
+  primary: { text: "", bg: "" },
+  neutral: { text: "", bg: "" },
+};
+
+export default Button;
+```
+
+`Foo.tsx`
+```tsx
+import Button, { ButtonColor } from "...";
+
+<Button color={Button.colors.primary} />
+
+const customColor = { text: "", bg: "" };
+<Button color={customColor} />
+```
 
 ## Background
 
@@ -38,6 +68,7 @@ Taking the "Friendly" expectation into consideration, we can see the local name 
 // Approach C with namespace import
 import * as Button from "...";
 <Button.Component /> // weird usage
+
 // Approach C with alias import
 import { Component as Button } from "..."; // extra work
 <Button />
@@ -93,36 +124,6 @@ Although not technically required, we prefer approach B here:
 - For types of props, naming conflicts are common (e.g., many components could have the "color" prop), so it's better to help our users in the first place.
 - Instead of `export default () => ...`, we prefered `export default Button`, so it's more unified to have other export entries to start with Button. In other words, we already named our export entries with global name.
 - It helps a little for code navigation.
-
-## Conclusion
-
-`Button.tsx`
-```tsx
-export interface ButtonColor {
-  text: string;
-  bg: string;
-};
-
-interface Props { color: ButtonColor; }
-const Button = (props: Props) => (...);
-
-Button.colors = {
-  primary: { text: "", bg: "" },
-  neutral: { text: "", bg: "" },
-};
-
-export default Button;
-```
-
-`Foo.tsx`
-```tsx
-import Button, { ButtonColor } from "...";
-
-<Button color={Button.colors.primary} />
-
-const customColor = { text: "", bg: "" };
-<Button color={customColor} />
-```
 
 ## References
 

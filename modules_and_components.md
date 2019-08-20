@@ -1,5 +1,7 @@
 # Modules and components
 
+> TL;DR: go to [Conclusion](https://github.com/axieinfinity/festival/blob/master/modules_and_components.md#conclusion)
+
 ## Background
 
 When users use our [components](https://reactjs.org/docs/components-and-props.html#function-and-class-components), they may need to [import](https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/import) more than just the component itself. For example, they may want to use the [interface](https://www.typescriptlang.org/docs/handbook/interfaces.html) of a prop (e.g., button's color) or its built-in options (e.g., the "primary" color for a button). Good components, therefore, should [export](https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export) its API with this in mind.

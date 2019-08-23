@@ -10,7 +10,7 @@ What to export from a component, and how to export them, are therefore critical 
 1. Attach built-in values to the exported components
 1. Use named export for types and interfaces
 
-For a code representation of these principles, see the [Conclusion](https://github.com/axieinfinity/festival/blob/master/component_export.md#conclusion) section.
+For a code representation of these principles, see the [Conclusion](#4-conclusion) section.
 
 
 ## 2. Expectations

@@ -156,9 +156,9 @@ Button.colors = {
 
 In fact, this is a great approach for exporting built-in values. While named exports require users to go back to the import statements to explore all options (since auto import [can't help](https://user-images.githubusercontent.com/4246176/63336293-21f1fc00-c369-11e9-8c09-dd6c52941a6b.png) here), this approach doesn’t require users to even import anything other than the component, and can explore all built-in values from that component directly:
 
-<img width="647" alt="Screen Shot 2019-08-21 at 1 06 08 AM" src="https://user-images.githubusercontent.com/5953369/63372263-ef1f2680-c3af-11e9-9683-865e21199b93.png">
+<img width="647" alt="Screen Shot 2019-08-21 at 1 06 08 AM" src="https://user-images.githubusercontent.com/5953369/63372263-ef1f2680-c3af-11e9-9683-865e21199b93.png" />
 
-<img width="647" alt="Screen Shot 2019-08-21 at 1 06 22 AM" src="https://user-images.githubusercontent.com/5953369/63372262-ee869000-c3af-11e9-8f9d-6666ddfe8529.png">
+<img width="647" alt="Screen Shot 2019-08-21 at 1 06 22 AM" src="https://user-images.githubusercontent.com/5953369/63372262-ee869000-c3af-11e9-8f9d-6666ddfe8529.png" />
 
 ### 3.4. The types
 
